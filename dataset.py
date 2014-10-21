@@ -38,5 +38,3 @@ for query in txt_file.read().split("<--NEW CODE-->"):
         else:
             break
         count += 1
-
-print queries.find()[25]['code']
