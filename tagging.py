@@ -8,6 +8,7 @@ import wx.lib.agw.aquabutton as ab
 if __name__ == '__main__':
     class MainFrame(wx.Frame):
         def __init__(self):
+            #initialize the main frame
             wx.Frame.__init__(self, None, -1, title="Tagging", size=wx.DisplaySize())
             self.panel = wx.Panel(self, size=self.GetSize())
             self.panel.SetBackgroundColour('#dfe3ee')
@@ -37,6 +38,10 @@ if __name__ == '__main__':
             button.Bind(wx.EVT_BUTTON, self.foo)
 
         def foo(self, a):
+            """
+            This function insert to the collection 'tagged' the query for the current main code according to the
+                clicked panels
+            """
             record = {'code': self.doc_code.GetLabel(), 'code_id': self.code_id}
             for lab in self.queries_panel.GetChildren()[0].GetChildren():
                 if lab.GetBackgroundColour() == '#dfe3ee':
@@ -51,19 +56,31 @@ if __name__ == '__main__':
             self.number_file = open("number.txt", 'w')
             self.number_file.write(self.code_id)
             self.number_file.close()
-            self.doc_code.SetLabel(documents.find({"code_id": self.code_id})[0]['code'])
+            if documents.count() <= int(self.code_id):
+                self.doc_code.SetLabel("FINISHED!! :-)")
+            else:
+                self.doc_code.SetLabel(documents.find({"code_id": self.code_id})[0]['code'])
 
         def __set_title(self):
             self.pic.SetPosition((200, 5))
 
         def __set_starting_code(self):
+            """
+            initialize the main code according to the last one we've tagged
+            """
             self.doc_code_panel.Show()
-            code = documents.find({"code_id": self.code_id})[0]['code']
+            if int(self.code_id) >= documents.count():
+                code = "FINISHED! :-)"
+            else:
+                code = documents.find({"code_id": self.code_id})[0]['code']
             self.doc_code.SetLabel(code)
             self.doc_code.SetId(int(self.code_id))
             self.doc_code.Show()
 
         def __set_queries(self):
+            """
+            show all the 55 code-queries
+            """
             self.queries_panel.Show()
             self.queries_panel.SetupScrolling()
             sizer = wx.BoxSizer(wx.VERTICAL)
@@ -89,6 +106,9 @@ if __name__ == '__main__':
             self.queries_panel.SetSizer(sizer)
 
         def __get_select(self, clicked_panel):
+            """
+            change the background color of a clicked panel
+            """
             def __select(self):
                 if clicked_panel.GetBackgroundColour() == '#dfe3ee':
                     clicked_panel.SetBackgroundColour('#F7A67D')

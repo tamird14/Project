@@ -40,7 +40,6 @@ def set_txt_file(count_queries):
                 changed_keys.append(query.split('\n')[1].split('-')[2])
                 queries.insert({"code_id": count, "code": query.split(query.split('\n')[1])[1], "type": "changed"})
             elif NOT_IN_DB == query.split('\n')[1]:
-                print "bla"
                 queries.insert({"code_id": count, "code": query.split(query.split('\n')[1])[1], "type": "not_in_db"})
             else:
                 break
@@ -58,7 +57,6 @@ if __name__ == '__main__':
     txt_file = open(TEST_COLLECTION, 'r')
     count = set_in_db()
     set_txt_file(count)
-
 
     # gets the ID of each code in queries which is also in documents or is in documents and was edited
     changed_list = []
